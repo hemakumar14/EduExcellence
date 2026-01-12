@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: studentms
+
+  # H2 In-Memory Database Configuration
+  datasource:
+    url: jdbc:h2:mem:studentdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false
+
+  # JPA / Hibernate Configuration
+  jpa:
+                database-platform: org.hibernate.dialect.H2Dialect
+                hibernate:
+                  ddl-auto: update
+                  show-sql: true # Helpful for your execution screenshots
+                properties:
+                  hibernate:
+                    format_sql: true
+
+# Note: Service discovery/load balancing configurations would go here in later modules [cite: 23]
