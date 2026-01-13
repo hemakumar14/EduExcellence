@@ -4,6 +4,7 @@ import com.eduexcellence.studentms.entity.Student;
 import com.eduexcellence.studentms.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,23 @@ public class StudentController {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    private final String FEES_URL = "http://localhost:8081/fees";
+
+    // Call feesms: Fetch fees for a specific student
+    @GetMapping("/{id}/fee-records")
+    public List<Object> getFeeRecords(@PathVariable Long id) {
+        return restTemplate.getForObject(FEES_URL + "/" + id, List.class);
+    }
+
+    // Call feesms: Process a payment for a student
+    @PostMapping("/{id}/pay-fees")
+    public Object processPayment(@PathVariable Long id, @RequestBody Object feeRequest) {
+        return restTemplate.postForObject(FEES_URL, feeRequest, Object.class);
+    }
 
     // 1. An API to fetch all students [cite: 18]
     @GetMapping
